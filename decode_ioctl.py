@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os, sys
-print(sys.argv, len(sys.argv))
+
 usage = """"Usage: decode_ioctl.py [ioctl_code]
 Example: {} 0x50505050
 If ioctl_code argument is not given, will loop and prompt for ioctl codes."
@@ -18,7 +18,7 @@ METHOD_TYPE_DICT = {0x00:'METHOD_BUFFERED',
 					0x03:'METHOD_NEITHER'}			
 					
 def format_print_ioctl(ioctl, dev, access, func, method):
-	print("IOCTL code {:08x}:".format(ioctl))
+	print("IOCTL code 0x{:08x}:".format(ioctl))
 	print("Device code: 0x{:04x}".format(dev))
 	print("Access code: 0x{:02x} [{rep}]".format(access, rep=ACCESS_TYPE_DICT[access]))
 	print("Function code: 0x{:04x}".format(func))
@@ -26,6 +26,10 @@ def format_print_ioctl(ioctl, dev, access, func, method):
 	print("\n")
 					
 def ioc_decode(ioctl):
+	if ioctl > 0xffffffff:
+		print("Invalid IOCTL code: must be 0 < ioctl < 0xffffffff")
+		return
+		
 	device_code   = (ioctl & 0xffff0000) >> 16
 	access_code   = (ioctl & 0x0000c000) >> 14
 	function_code = (ioctl & 0x00003ffc) >> 2
@@ -42,10 +46,10 @@ elif len(sys.argv) == 2:
 	exit(0)
 	
 while True:
-	ioctl_code = input("Enter a ioctl code (ie. 0x5349e0e0): ")
 	try:
-		ioctl_code = int(ioctl_code, 16)
-	except (ValueError, TypeError):
-		print(usage)
+		ioctl_code = input("Enter a ioctl code (ie. 0x5349e0e0): ")
+	except (NameError, SyntaxError):
+		print("Invalid IOCTL code: must be 0 < ioctl < 0xffffffff")
+		continue
 		
 	ioc_decode(ioctl_code)
