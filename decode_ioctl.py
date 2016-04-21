@@ -8,14 +8,14 @@ If ioctl_code argument is not given, will loop and prompt for ioctl codes."
 """ #.format(sys.argv[0])
 
 ACCESS_TYPE_DICT = {0x00:'FILE_ANY_ACCESS',
-					0x01:'FILE_READ_ACCESS',
-					0x02:'FILE_WRITE_ACCESS',
-					0x03:'FILE_READ_ACCESS | FILE_WRITE_ACCESS'}
+		0x01:'FILE_READ_ACCESS',
+		0x02:'FILE_WRITE_ACCESS',
+		0x03:'FILE_READ_ACCESS | FILE_WRITE_ACCESS'}
 
 METHOD_TYPE_DICT = {0x00:'METHOD_BUFFERED',
-					0x01:'METHOD_IN_DIRECT',
-					0x02:'METHOD_OUT_DIRECT',
-					0x03:'METHOD_NEITHER'}			
+		0x01:'METHOD_IN_DIRECT',
+		0x02:'METHOD_OUT_DIRECT',
+		0x03:'METHOD_NEITHER'}			
 					
 def format_print_ioctl(ioctl, dev, access, func, method):
 	print("IOCTL code 0x{:08x}:".format(ioctl))
